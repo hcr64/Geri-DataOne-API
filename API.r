@@ -1,23 +1,35 @@
-# install the DataOne Packacge
-install.packages("dataone")
+# install the DataOne an ddatapack Packages
+# install.packages("dataone")
+# install.packages("datapack")
 
-# include the library
+# include the libraries
 library(dataone)
+library(datapack)
 
-# connect to a coordinating node
+# connect to a coordinating node, set to PROD for staging data
+coord_node <- CNode( "PROD" )
 
-# then connect that corrdinating node to a member node\
+# then connect that coordinating node to a member node to upload data to
+member_node <- getMNode( coord_node, "" )
 
-# get a file path to what will be uploaded
+# get a file path to what will be uploaded, get a metadat path too
+local_data_path = ""
+metadata_path = ""
 
-# get a unique identifier for uploading the data
+# get the file/data format (eg. csv)
+data_format <- "file/csv"
 
-# get the file/data formate (eg. csv)
+# create data package object
+data_package <- new("DataPackage")
 
-# put the metadata into an object
+# put the data and metadata into an object
+data_obj <- new("DataObject", format=data_format, filename=local_data_path)
+metadata_obj <- new("DataObject", filename=metadata_path)
 
-# put orcid int0 the object too
-
-# read the file 
+# add the data objects into the dataPackage
+data_package <- addMember( data_package, data_obj )
+data_package <- addMember( data_package, metadata_obj )
 
 # upload it
+package_id <- uploadDataPackage(mn, dp)
+print(packages_id)
