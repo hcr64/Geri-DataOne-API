@@ -16,10 +16,13 @@ REPO = "Geri-DataOne-API"
 PAT = ""
 
 # make a function to create a github file and add it to the repo
-create_gh_file_to_repo <- function( f_path, f_content, commit_msg="Add new file from API" )
+create_gh_file_to_repo <- function( f_path, local_f_path, commit_msg="Add new file from API" )
 {
+  # get the file content from the local file
+  f_content <- readLines( file( local_f_path, "r" ) )
+
   # encode to b64
-  encoded <- base64encode( charToRaw( f_content ) )
+  encoded <- base64encode( charToRaw( paste( f_content, collapse="\n" ) ) )
   
   # get the complete repo address
   repo_url <- paste0( "https://api.github.com/repos/", USERNAME, "/", REPO, "/contents/", f_path )
@@ -45,7 +48,7 @@ create_gh_file_to_repo <- function( f_path, f_content, commit_msg="Add new file 
   )
   
   # get response
-  if( status_code(put_req) == 201)
+  if( status_code(put_req) == 200)
   {
     # success
     print("Success!\n")
@@ -61,6 +64,5 @@ create_gh_file_to_repo <- function( f_path, f_content, commit_msg="Add new file 
 }
 
 # call the function
-result <- create_gh_file_to_repo("test_file2.txt", "new text file stuff", "Create test_file.txt and testing")
+result <- create_gh_file_to_repo("test_file5.txt", "Geri-DataOne-API/README.md", "Create test_file.txt and testing")
 print(result)
-
