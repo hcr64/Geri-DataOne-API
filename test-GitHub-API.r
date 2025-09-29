@@ -63,6 +63,24 @@ create_gh_file_to_repo <- function( f_path, local_f_path, commit_msg="Add new fi
   }
 }
 
+# a function that appends to a file in github
+append_github_file <- function( f_name, new_file, commit_msg="Added text to file")
+{
+  # get the file content from the local file
+  f_content <- paste( readLines( file( f_name, "r" ) ), collapse="\n" )
+  
+  # get the new encoded file content
+  new_f_content <- paste( readLines( file( new_file, "r" ) ), collapse="\n" )
+  
+  # get the combined text
+  combined_text = paste0( f_content, "\n", new_f_content )
+  print(combined_text)
+  
+  # encode to b64
+  encoded <- base64encode( charToRaw( combined_text ) ) 
+}
+
 # call the function
-result <- create_gh_file_to_repo("test_file5.txt", "Geri-DataOne-API/README.md", "Create test_file.txt and testing")
-print(result)
+# result <- create_gh_file_to_repo("test_file5.txt", "Geri-DataOne-API/README.md", "Create test_file.txt and testing")
+# print(result)
+append_github_file("Geri-DataOne-API/README.md", "Geri-DataOne-API/README.md")
