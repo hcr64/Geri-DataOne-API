@@ -1,6 +1,7 @@
 # install the DataOne an ddatapack Packages
 # install.packages("dataone")
 # install.packages("datapack")
+# install.packages("uuid")
 
 # include the libraries
 library(dataone)
@@ -11,14 +12,17 @@ library(uuid)
 coord_node <- CNode( "STAGING" )
 
 # then connect that coordinating node to a member node to upload data to
-member_node <- getMNode( coord_node, "urn:node:mnSandboxUCSB1" )
+member_node <- getMNode( coord_node, "urn:node:mnSandbox" )
+
+token <- getAuthToken()
+print(token)
 
 # get a file path to what will be uploaded, get a metadat path too
-local_data_path = "data.csv"
-metadata_path = "metadata.csv"
+local_data_path = "Geri-DataOne-API/data.csv"
+metadata_path = "Geri-DataOne-API/metadata.csv"
 
 # get the file/data format (eg. csv)
-data_format <- "file/csv"
+data_format <- "text/csv"
 
 # create data package object
 data_package <- new("DataPackage")
@@ -32,5 +36,5 @@ data_package <- addMember( data_package, data_obj )
 data_package <- addMember( data_package, metadata_obj )
 
 # upload it
-package_id <- uploadDataPackage(mn, dp)
-print(packages_id)
+package_id <- uploadDataPackage(member_node, data_package)
+print(package_id)
